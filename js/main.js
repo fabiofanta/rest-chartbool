@@ -10,8 +10,11 @@ $.ajax({
 
 		for (var i = 0; i < revenuesData.length; i++) {
 			var revenueData = revenuesData[i];
+			console.log(revenueData);
 			var date = revenueData.date;
-			var monthName = moment(date,"DD/MM/YYYY").format('MMMM');
+			var isoDate = moment(date,"DD/MM/YYYY");
+			console.log(isoDate);
+			var monthName = isoDate.format('MMMM');
 			var labelRev = [];
 			var dataRev = [];
 
@@ -55,7 +58,9 @@ $.ajax({
 			data: {
 				datasets: [{
 				   data: data,
-				   label:'Montly Revenues'
+				   label:'Montly Revenues',
+				   fill:false,
+				   lineTension:0
 			   }],
 			labels: labels,
 			}
