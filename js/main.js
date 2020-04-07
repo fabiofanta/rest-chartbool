@@ -95,15 +95,23 @@ $.ajax({
 			type: type,
 			data: {
 				datasets: [{
-				   data: data,
-				   label:'Annual revenues per Salesman',
-				   backgroundColor: ['blue','red','yellow','green'],
-				   dataIndex: 1
+					   data: data,
+					   label:'Annual revenues per Salesman',
+					   backgroundColor: ['blue','red','yellow','green'],
+					   dataIndex: 1
 
-			   }],
-				labels: labels,
-			}
-		}
+				   		}],
+				labels: labels
+				},
+			// options: {
+			// 	tooltips: {
+			// 		callbacks: {
+			// 			afterlabel:"%",
+			// 			label:"dsd"
+			// 		}
+			// 	}
+			// }
+		};
 		return data
-	}
+	};
 });
