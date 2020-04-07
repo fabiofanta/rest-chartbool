@@ -97,14 +97,13 @@ $.ajax({
 				datasets: [{
 				   data: data,
 				   label:'Annual revenues per Salesman',
-				   backgroundColor: ['blue','red','yellow','green']
+				   backgroundColor: ['blue','red','yellow','green'],
+				   dataIndex: 1
 
 			   }],
 				labels: labels,
 			}
 		}
-
 		return data
-
 	}
 });
