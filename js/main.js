@@ -22,6 +22,8 @@ $.ajax({
 			montlyRevenues[monthName] += revenueData.amount;
 		};
 
+		console.log(montlyRevenues);
+
 		for (var key in montlyRevenues) {
 			labelRev.push(key);
 			dataRev.push(montlyRevenues[key]);
@@ -53,7 +55,7 @@ $.ajax({
 			data: {
 				datasets: [{
 				   data: data,
-				   backgroundColor: labels,
+				   label:'Montly Revenues'
 			   }],
 			labels: labels,
 			}
