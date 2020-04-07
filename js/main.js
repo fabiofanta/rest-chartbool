@@ -100,7 +100,7 @@ $.ajax({
 				   backgroundColor: ['blue','red','yellow','green']
 
 			   }],
-			labels: labels,
+				labels: labels,
 			}
 		}
 
