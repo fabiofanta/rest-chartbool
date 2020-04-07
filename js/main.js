@@ -7,6 +7,7 @@ $.ajax({
 		var revenuesData = data;
 		console.log(revenuesData);
 		var montlyRevenues = {};
+		console.log(montlyRevenues);
 		var salesManRevenues = {};
 		var totalRevenue = 0;
 
@@ -16,7 +17,7 @@ $.ajax({
 			var date = revenueData.date;
 			var salesMan = revenueData.salesman;
 			var isoDate = moment(date,"DD/MM/YYYY");
-			var monthName = isoDate.format('MMMM');
+			var monthName = isoDate.month();
 			var labelRev = [];
 			var dataRev = [];
 			console.log(totalRevenue);
@@ -39,7 +40,7 @@ $.ajax({
 		};
 
 		for (var key in montlyRevenues) {
-			labelRev.push(key);
+			labelRev.push(moment().month(key).format('MMMM'));
 			dataRev.push(montlyRevenues[key]);
 		};
 
