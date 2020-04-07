@@ -1,24 +1,26 @@
 $(document).ready(function () {
 
+
 $.ajax({
 	url: 'http://157.230.17.132:4009/sales',
 	success: function(data) {
-		console.log(data);
 		var revenuesData = data;
 		var montlyRevenues = {};
-		var month = moment(data.date).month().format('MMMM'))
-		for (var i = 0; revenuesData.length; i++) {
+		for (var i = 0; i < revenuesData.length; i++) {
 			var revenueData = revenuesData[i];
-			if (montlyRevenues[colore] === undefined) {
-				montlyRevenues[colore] = 0;
-			}
-
-		}
+			console.log(revenueData);
+			var isoDate = moment(revenueData.date,"DD/MM/YYYY");
+			console.log(isoDate);
+			var month = isoDate.month();
+			console.log(month);
+			// if (montlyRevenues[colore] === undefined) {
+			// 	montlyRevenues[colore] = 0;
+			// }
+		};
 	}
 
 
 })
-
 
 
 
