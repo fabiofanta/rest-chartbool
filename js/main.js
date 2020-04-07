@@ -6,7 +6,7 @@ $.ajax({
 		console.log(data);
 		var revenuesData = data;
 		var montlyRevenues = {};
-		var month = moment(data.date.month().format('MMMM'))
+		var month = moment(data.date).month().format('MMMM'))
 		for (var i = 0; revenuesData.length; i++) {
 			var revenueData = revenuesData[i];
 			if (montlyRevenues[colore] === undefined) {
