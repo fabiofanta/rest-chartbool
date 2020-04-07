@@ -11,7 +11,7 @@ $.ajax({
 			console.log(revenueData);
 			var isoDate = moment(revenueData.date,"DD/MM/YYYY");
 			console.log(isoDate);
-			var month = isoDate.month();
+			var month = isoDate.format('MMMM');
 			console.log(month);
 			// if (montlyRevenues[colore] === undefined) {
 			// 	montlyRevenues[colore] = 0;
