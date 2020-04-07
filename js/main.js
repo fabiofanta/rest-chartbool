@@ -5,22 +5,32 @@ $.ajax({
 	url: 'http://157.230.17.132:4009/sales',
 	success: function(data) {
 		var revenuesData = data;
+		console.log(revenuesData);
 		var montlyRevenues = {};
+
 		for (var i = 0; i < revenuesData.length; i++) {
 			var revenueData = revenuesData[i];
-			console.log(revenueData);
-			var isoDate = moment(revenueData.date,"DD/MM/YYYY");
-			console.log(isoDate);
-			var month = isoDate.format('MMMM');
-			console.log(month);
-			// if (montlyRevenues[colore] === undefined) {
-			// 	montlyRevenues[colore] = 0;
-			// }
+			var date = revenueData.date;
+			var monthName = moment(date,"DD/MM/YYYY").format('MMMM');
+			var labelRev = [];
+			var dataRev = [];
+
+
+			if (montlyRevenues[monthName] === undefined) {
+				montlyRevenues[monthName] = 0;
+			};
+			montlyRevenues[monthName] += revenueData.amount;
 		};
+
+		for (var key in montlyRevenues) {
+			labelRev.push(key);
+			dataRev.push(montlyRevenues[key]);
+		};
+
+		chart(chartData('line',dataRev,labelRev),'montly-revenue');
+
 	}
-
-
-})
+});
 
 
 
@@ -39,7 +49,7 @@ $.ajax({
 
 	function chartData(type,data,labels) {
 		var data = {
-			type:type,
+			type: type,
 			data: {
 				datasets: [{
 				   data: data,
