@@ -7,32 +7,52 @@ $.ajax({
 		var revenuesData = data;
 		console.log(revenuesData);
 		var montlyRevenues = {};
+		var salesManRevenues = {};
+		var totalRevenue = 0;
 
 		for (var i = 0; i < revenuesData.length; i++) {
 			var revenueData = revenuesData[i];
 			console.log(revenueData);
 			var date = revenueData.date;
+			var salesMan = revenueData.salesman;
 			var isoDate = moment(date,"DD/MM/YYYY");
-			console.log(isoDate);
 			var monthName = isoDate.format('MMMM');
 			var labelRev = [];
 			var dataRev = [];
+			console.log(totalRevenue);
+			var salesManlabel = [];
+			var salesMandata = [];
 
 
 			if (montlyRevenues[monthName] === undefined) {
 				montlyRevenues[monthName] = 0;
 			};
-			montlyRevenues[monthName] += revenueData.amount;
-		};
 
-		console.log(montlyRevenues);
+			if (salesManRevenues[salesMan] === undefined) {
+				salesManRevenues[salesMan] = 0;
+			};
+			montlyRevenues[monthName] += revenueData.amount;
+			salesManRevenues[salesMan] += revenueData.amount;
+			totalRevenue += revenueData.amount;
+
+
+		};
 
 		for (var key in montlyRevenues) {
 			labelRev.push(key);
 			dataRev.push(montlyRevenues[key]);
 		};
 
-		chart(chartData('line',dataRev,labelRev),'montly-revenue');
+		for (var key in salesManRevenues) {
+			salesManlabel.push(key);
+			salesMandata.push(((salesManRevenues[key]/totalRevenue)*100).toFixed(2));
+		};
+
+		console.log(salesManlabel);
+		console.log(salesMandata);
+
+		chart(lineChartData('line',dataRev,labelRev),'montly-revenue');
+		chart(pieChartData('pie',salesMandata,salesManlabel),'annual-revenuexsalesman');
 
 	}
 });
@@ -52,7 +72,7 @@ $.ajax({
 		var myChart = new Chart(ctx,data);
 	};
 
-	function chartData(type,data,labels) {
+	function lineChartData(type,data,labels) {
 		var data = {
 			type: type,
 			data: {
@@ -61,6 +81,23 @@ $.ajax({
 				   label:'Montly Revenues',
 				   fill:false,
 				   lineTension:0
+			   }],
+			labels: labels,
+			}
+		}
+
+		return data
+
+	}
+	function pieChartData(type,data,labels) {
+		var data = {
+			type: type,
+			data: {
+				datasets: [{
+				   data: data,
+				   label:'Annual revenues per Salesman',
+				   backgroundColor: ['blue','red','yellow','green']
+
 			   }],
 			labels: labels,
 			}
