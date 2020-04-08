@@ -3,6 +3,7 @@ $(document).ready(function () {
 
 $.ajax({
 	url: 'http://157.230.17.132:4009/sales',
+	method:'GET',
 	success: function(data) {
 		var revenuesData = data;
 		console.log(revenuesData);
