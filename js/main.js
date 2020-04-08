@@ -2,14 +2,30 @@ $(document).ready(function () {
 
 	buildDashboard();
 
+$('#btn-add').click(function() {
+	var salesMan = $('#salesman-select').val();
+	var date = $('#sales-date').val();
+	var amount = $('#sales-amount').val();
+	var isoDate = moment(date).format('DD/MM/YYYY');
+	console.log(salesMan);
+	console.log(isoDate);
+	console.log(amount);
+	addSales(salesMan,amount,isoDate);
+});
 
 
-
-
-
-
-
-
+function addSales(smName,money,time) {
+	$.ajax({
+		url: 'http://157.230.17.132:4009/sales',
+		method:'POST',
+		data: {
+			salesman: smName,
+			amount: parseInt(money),
+			date: time
+		},
+		success: ""
+	})
+};
 
 function buildDashboard() {
 	$.ajax({
