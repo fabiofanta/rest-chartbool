@@ -5,25 +5,25 @@ $(document).ready(function () {
 $('#btn-add').click(function() {
 	var salesMan = $('#salesman-select').val();
 	var date = $('#sales-date').val();
-	var amount = $('#sales-amount').val();
+	var amount = parseInt($('#sales-amount').val());
 	var isoDate = moment(date).format('DD/MM/YYYY');
 	console.log(salesMan);
 	console.log(isoDate);
 	console.log(amount);
-	addSales(salesMan,amount,isoDate);
+	var dataObject = {salesman:salesMan,amount:amount,date:isoDate};
+	console.log(dataObject);
+	addSales(dataObject);
 });
 
 
-function addSales(smName,money,time) {
+function addSales(object) {
 	$.ajax({
 		url: 'http://157.230.17.132:4009/sales',
 		method:'POST',
-		data: {
-			salesman: smName,
-			amount: parseInt(money),
-			date: time
-		},
-		success: ""
+		data: object,
+		success: function() {
+			buildDashboard();
+		}
 	})
 };
 
@@ -60,9 +60,9 @@ function buildDashboard() {
 				if (salesManRevenues[salesMan] === undefined) {
 					salesManRevenues[salesMan] = 0;
 				};
-				montlyRevenues[monthName] += revenueData.amount;
-				salesManRevenues[salesMan] += revenueData.amount;
-				totalRevenue += revenueData.amount;
+				montlyRevenues[monthName] += parseInt(revenueData.amount);
+				salesManRevenues[salesMan] += parseInt(revenueData.amount);
+				totalRevenue += parseInt(revenueData.amount);
 
 
 			};
