@@ -108,7 +108,7 @@ $.ajax({
 					callbacks: {
 						label:function (tooltipItem, data) {
 							var tooltipsX100 = (data.datasets[0].data[tooltipItem.index]*100).toFixed(2);
-							return  tooltips + "%"
+							return  tooltipsX100 + "%"
 						}
 					}
 				}
