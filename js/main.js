@@ -47,7 +47,7 @@ $.ajax({
 
 		for (var key in salesManRevenues) {
 			salesManlabel.push(key);
-			salesMandata.push(((salesManRevenues[key]/totalRevenue)*100).toFixed(2));
+			salesMandata.push((salesManRevenues[key]/totalRevenue));
 		};
 
 		console.log(salesManlabel);
@@ -91,6 +91,7 @@ $.ajax({
 		return data
 
 	}
+
 	function pieChartData(type,data,labels) {
 		var data = {
 			type: type,
@@ -102,14 +103,16 @@ $.ajax({
 				   		}],
 				labels: labels
 				},
-			// options: {
-			// 	tooltips: {
-			// 		callbacks: {
-			// 			afterlabel:"%",
-			// 			label:"dsd"
-			// 		}
-			// 	}
-			// }
+			options: {
+				tooltips: {
+					callbacks: {
+						label:function (tooltipItem, data) {
+							var tooltips = (data.datasets[0].data[tooltipItem.index]*100).toFixed(2);
+							return  tooltips + "%"
+						}
+					}
+				}
+			}
 		};
 		return data
 	};
