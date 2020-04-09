@@ -6,7 +6,7 @@ $('#btn-add').click(function() {
 	var salesMan = $('#salesman-select').val();
 	var date = $('#sales-date').val();
 	var amount = parseInt($('#sales-amount').val());
-	var isoDate = moment(date).format('DD/MM/YYYY');
+	var isoDate = moment(date,'YYYY-MM-DD').format('DD/MM/YYYY');
 	console.log(salesMan);
 	console.log(isoDate);
 	console.log(amount);
@@ -22,14 +22,13 @@ $('#btn-add').click(function() {
 
 
 
-function addSales(object) {
+	function addSales(object) {
 	$.ajax({
 		url: 'http://157.230.17.132:4009/sales',
 		method:'POST',
 		data: object,
-		success: function() {
+		success: function(data) {
 			buildDashboard();
-			myChart.update();
 		},
 		error: function (err) {
 			alert('API Error!')
@@ -37,7 +36,8 @@ function addSales(object) {
 	})
 };
 
-function buildDashboard() {
+	function buildDashboard() {
+	$('.charts').empty();
 	$.ajax({
 		url: 'http://157.230.17.132:4009/sales',
 		method:'GET',
@@ -106,6 +106,8 @@ function buildDashboard() {
 			console.log(salesMandata);
 			console.log(quarterLabel);
 			console.log(salesQuarterdata);
+			$('.charts').append('<canvas id="montly-revenue"></canvas><canvas id="annual-revenuexsalesman"></canvas><canvas id="quarter-chart"></canvas>');
+
 
 			chart(lineChartData(dataRev,labelRev),'montly-revenue');
 			chart(pieChartData(salesMandata,salesManlabel),'annual-revenuexsalesman');
