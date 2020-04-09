@@ -5,21 +5,12 @@ $(document).ready(function () {
 $('#btn-add').click(function() {
 	var salesMan = $('#salesman-select').val();
 	var date = $('#sales-date').val();
-	var amount = parseInt($('#sales-amount').val());
+	var amount = $('#sales-amount').val();
 	var isoDate = moment(date,'YYYY-MM-DD').format('DD/MM/YYYY');
-	console.log(salesMan);
-	console.log(isoDate);
-	console.log(amount);
 	var dataObject = {salesman:salesMan,amount:amount,date:isoDate};
-	console.log(dataObject);
+	
 	addSales(dataObject);
 });
-
-
-
-
-
-
 
 
 	function addSales(object) {
@@ -36,89 +27,111 @@ $('#btn-add').click(function() {
 	})
 };
 
+	function montlyRevDataBuilder(revenuesData) {
+		var montlyRevenues = {};
+		for (var i = 0; i < revenuesData.length; i++) {
+			var revenueData = revenuesData[i];
+			var date = revenueData.date;
+			var isoDate = moment(date,"DD/MM/YYYY");
+			var monthName = isoDate.month();
+
+			//array to fill in order to put them into chart
+			var labelRev = [];
+			var dataRev = [];
+
+
+			if (montlyRevenues[monthName] === undefined) {
+				montlyRevenues[monthName] = 0;
+			};
+
+			montlyRevenues[monthName] += parseInt(revenueData.amount);
+		};
+
+		for (var key in montlyRevenues) {
+			labelRev.push(moment().month(key).format('MMMM'));
+			dataRev.push(montlyRevenues[key]);
+		};
+
+		return {label:labelRev,data:dataRev}
+	};
+
+	function salesManDataBuilder(revenuesData) {
+		var salesManRevenues = {};
+		var totalRevenue = 0;
+
+		for (var i = 0; i < revenuesData.length; i++) {
+			var revenueData = revenuesData[i];
+			var salesMan = revenueData.salesman;
+			var salesManLabel = [];
+			var salesManData = [];
+
+			if (salesManRevenues[salesMan] === undefined) {
+				salesManRevenues[salesMan] = 0;
+			};
+
+			salesManRevenues[salesMan] += parseInt(revenueData.amount);
+			totalRevenue += parseInt(revenueData.amount);
+		};
+
+		for (var key in salesManRevenues) {
+			salesManLabel.push(key);
+			salesManData.push((salesManRevenues[key]/totalRevenue));
+		};
+
+		return {label:salesManLabel,data:salesManData}
+	};
+
+	function qrtSalesDataBuilder(revenuesData) {
+		var quarterSales = {};
+
+
+		for (var i = 0; i < revenuesData.length; i++) {
+			var revenueData = revenuesData[i];
+			var date = revenueData.date;
+			var isoDate = moment(date,"DD/MM/YYYY");
+			var quarterDate = isoDate.quarter();
+			var quarterLabel = [];
+			var salesQuarterData = [];
+
+
+			if (quarterSales[quarterDate] === undefined) {
+				quarterSales[quarterDate] = 0;
+			};
+
+			quarterSales[quarterDate] += 1;
+		};
+
+		for (var key in quarterSales) {
+			quarterLabel.push('Q' + key);
+			salesQuarterData.push(quarterSales[key]);
+		};
+
+		return {label:quarterLabel,data:salesQuarterData}
+	};
+
+
 	function buildDashboard() {
-	$('.charts').empty();
+	$('.charts').empty(); // reset canvas
 	$.ajax({
 		url: 'http://157.230.17.132:4009/sales',
 		method:'GET',
 		success: function(data) {
 			var revenuesData = data;
-			console.log(revenuesData);
-			var montlyRevenues = {};
-			console.log(montlyRevenues);
-			var salesManRevenues = {};
-			var quarterRevenues = {};
-			var totalRevenue = 0;
+			var montlyData = montlyRevDataBuilder(revenuesData);
+			var salesManData = salesManDataBuilder(revenuesData);
+			var quarterSalesData = qrtSalesDataBuilder(revenuesData);
+			$('.charts').append('<canvas id="montly-revenue"></canvas><canvas id="annual-revenuexsalesman"></canvas><canvas id="quarter-chart"></canvas>'); // // reset canvas
 
-			for (var i = 0; i < revenuesData.length; i++) {
-				var revenueData = revenuesData[i];
-				console.log(revenueData);
-				var date = revenueData.date;
-				var salesMan = revenueData.salesman;
-				var isoDate = moment(date,"DD/MM/YYYY");
-				var monthName = isoDate.month();
-				var quarterDate = isoDate.quarter();
-				console.log(quarterDate);
-				var labelRev = [];
-				var dataRev = [];
-				console.log(totalRevenue);
-				var salesManlabel = [];
-				var salesMandata = [];
-				var quarterLabel = [];
-				var salesQuarterdata = [];
-
-
-				if (montlyRevenues[monthName] === undefined) {
-					montlyRevenues[monthName] = 0;
-				};
-
-				if (salesManRevenues[salesMan] === undefined) {
-					salesManRevenues[salesMan] = 0;
-				};
-
-				if (quarterRevenues[quarterDate] === undefined) {
-					quarterRevenues[quarterDate] = 0;
-				};
-				montlyRevenues[monthName] += parseInt(revenueData.amount);
-				salesManRevenues[salesMan] += parseInt(revenueData.amount);
-				quarterRevenues[quarterDate] += 1;
-				totalRevenue += parseInt(revenueData.amount);
-
-
-			};
-
-			for (var key in montlyRevenues) {
-				labelRev.push(moment().month(key).format('MMMM'));
-				dataRev.push(montlyRevenues[key]);
-			};
-
-			for (var key in salesManRevenues) {
-				salesManlabel.push(key);
-				salesMandata.push((salesManRevenues[key]/totalRevenue));
-			};
-
-			for (var key in quarterRevenues) {
-				quarterLabel.push('Q' + key);
-				salesQuarterdata.push(quarterRevenues[key]);
-			};
-
-			console.log(salesManlabel);
-			console.log(salesMandata);
-			console.log(quarterLabel);
-			console.log(salesQuarterdata);
-			$('.charts').append('<canvas id="montly-revenue"></canvas><canvas id="annual-revenuexsalesman"></canvas><canvas id="quarter-chart"></canvas>');
-
-
-			chart(lineChartData(dataRev,labelRev),'montly-revenue');
-			chart(pieChartData(salesMandata,salesManlabel),'annual-revenuexsalesman');
-			chart(barChartData(salesQuarterdata,quarterLabel),'quarter-chart');
+			chart(lineChartData(montlyData.data,montlyData.label),'montly-revenue');
+			chart(pieChartData(salesManData.data,salesManData.label),'annual-revenuexsalesman');
+			chart(barChartData(quarterSalesData.data,quarterSalesData.label),'quarter-chart');
 		},
 
 		error: function(err) {
 			alert('API Error!');
 		}
 		})
-	}
+	};
 
 
 	function chart(data,selector) {
