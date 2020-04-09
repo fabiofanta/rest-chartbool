@@ -2,30 +2,8 @@ $(document).ready(function () {
 
 	buildDashboard();
 
-$('#btn-add').click(function() {
-	var salesMan = $('#salesman-select').val();
-	var date = $('#sales-date').val();
-	var amount = $('#sales-amount').val();
-	var isoDate = moment(date,'YYYY-MM-DD').format('DD/MM/YYYY');
-	var dataObject = {salesman:salesMan,amount:amount,date:isoDate};
-
-	addSales(dataObject);
-});
 
 
-	function addSales(object) {
-	$.ajax({
-		url: 'http://157.230.17.132:4009/sales',
-		method:'POST',
-		data: object,
-		success: function(data) {
-			buildDashboard();
-		},
-		error: function (err) {
-			alert('API Error!')
-		}
-	})
-};
 
 	function montlyRevDataBuilder(revenuesData) {
 		var montlyRevenues = {};
@@ -72,7 +50,6 @@ $('#btn-add').click(function() {
 			salesManRevenues[salesMan] += parseInt(revenueData.amount);
 			totalRevenue += parseInt(revenueData.amount);
 		};
-		$('option').clone();
 
 		for (var key in salesManRevenues) {
 			salesManLabel.push(key);
@@ -112,30 +89,32 @@ $('#btn-add').click(function() {
 		return {label:quarterLabel,data:salesQuarterData}
 	};
 
-
 	function buildDashboard() {
-	$('.charts').empty(); // reset canvas
-	$.ajax({
-		url: 'http://157.230.17.132:4009/sales',
-		method:'GET',
-		success: function(data) {
-			var revenuesData = data;
-			var montlyData = montlyRevDataBuilder(revenuesData);
-			var salesManData = salesManDataBuilder(revenuesData);
-			var quarterSalesData = qrtSalesDataBuilder(revenuesData);
-			$('.charts').append('<canvas id="montly-revenue"></canvas><canvas id="annual-revenuexsalesman"></canvas><canvas id="quarter-chart"></canvas>'); // // reset canvas
+		$('.charts').empty(); // reset canvas
+		$.ajax({
+			url: 'http://157.230.17.132:4009/sales',
+			method:'GET',
+			success: function(data) {
+				var revenuesData = data;
+				var montlyData = montlyRevDataBuilder(revenuesData);
+				var salesManData = salesManDataBuilder(revenuesData);
+				var quarterSalesData = qrtSalesDataBuilder(revenuesData);
+				$('.charts').append('<canvas id="montly-revenue"></canvas><canvas id="annual-revenuexsalesman"></canvas><canvas id="quarter-chart"></canvas>'); // // reset canvas
 
-			chart(lineChartData(montlyData.data,montlyData.label),'montly-revenue');
-			chart(pieChartData(salesManData.data,salesManData.label),'annual-revenuexsalesman');
-			chart(barChartData(quarterSalesData.data,quarterSalesData.label),'quarter-chart');
-		},
+				chart(lineChartData(montlyData.data,montlyData.label),'montly-revenue');
+				chart(pieChartData(salesManData.data,salesManData.label),'annual-revenuexsalesman');
+				chart(barChartData(quarterSalesData.data,quarterSalesData.label),'quarter-chart');
 
-		error: function(err) {
-			alert('API Error!');
-		}
-		})
+				//  function to add data using a post ajax call
+				addSales(salesManData.label);
+
+			},
+
+			error: function(err) {
+				alert('API Error!');
+			}
+		});
 	};
-
 
 	function chart(data,selector) {
 		var ctx = $('#'+ selector +'');
@@ -200,4 +179,63 @@ $('#btn-add').click(function() {
 		};
 		return data
 	};
+
+	function postData(object) {
+	$.ajax({
+		url: 'http://157.230.17.132:4009/sales',
+		method:'POST',
+		data: object,
+		success: function(data) {
+			buildDashboard();
+		},
+		error: function (err) {
+			alert('API Error!')
+		}
+	})
+};
+
+	function addSales(salesManToCheck) {
+		$('#btn-add').click(function() {
+			var salesMan = $('#salesman-select').val();
+			console.log(salesMan);
+			var smtcLowCase = arrayToLowerCase(salesManToCheck);
+			console.log(smtcLowCase);
+			if (!smtcLowCase.includes(salesMan.toLowerCase())) {
+				alert('Invalid SalesMan name');
+			} else {
+				var date = $('#sales-date').val();
+				var amount = parseInt($('#sales-amount').val());
+				if (isNaN(amount)) {
+					alert('Invalid amount');
+				} else {
+					var isoDate = moment(date,'YYYY-MM-DD').format('DD/MM/YYYY');
+					if (isoDate == 'Invalid date' || isoDate != moment(date,'YYYY-MM-DD').format('DD/MM/2017')) {
+						alert('Invalid date');
+					} else {
+						var dataObject = {salesman:stringCapitalize(salesMan),amount:amount,date:isoDate};
+						postData(dataObject);
+						console.log(dataObject);
+					};
+				};
+			};
+		});
+	};
+
+	function arrayToLowerCase(array) {
+		var newArray = [];
+		for (var i = 0; i < array.length; i++) {
+			var string = array[i].toLowerCase();
+			newArray.push(string);
+		};
+		return newArray
+	};
+
+	function stringCapitalize(string) {
+    	return string.charAt(0).toUpperCase() + string.toLowerCase().slice(1);
+	};
+
+
+
+
+
 });
