@@ -72,12 +72,13 @@ $('#btn-add').click(function() {
 			salesManRevenues[salesMan] += parseInt(revenueData.amount);
 			totalRevenue += parseInt(revenueData.amount);
 		};
+		$('option').clone();
 
 		for (var key in salesManRevenues) {
 			salesManLabel.push(key);
 			salesManData.push((salesManRevenues[key]/totalRevenue));
 			// append salesman-select aptions
-			$('#salesman-select').append('<option value="'+ key +'">'+ key + '</option>');
+			$('option:first-child').clone().removeAttr('disabled selected').text(key).val(key).appendTo('#salesman-select');
 		};
 
 		return {label:salesManLabel,data:salesManData}
