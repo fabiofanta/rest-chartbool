@@ -98,7 +98,7 @@ function buildDashboard() {
 			};
 
 			for (var key in quarterRevenues) {
-				quarterLabel.push(key);
+				quarterLabel.push('Q' + key);
 				salesQuarterdata.push(quarterRevenues[key]);
 			};
 
