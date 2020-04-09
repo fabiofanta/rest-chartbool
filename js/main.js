@@ -81,7 +81,7 @@ function buildDashboard() {
 				};
 				montlyRevenues[monthName] += parseInt(revenueData.amount);
 				salesManRevenues[salesMan] += parseInt(revenueData.amount);
-				quarterRevenues[quarterDate] += parseInt(revenueData.amount);
+				quarterRevenues[quarterDate] += 1;
 				totalRevenue += parseInt(revenueData.amount);
 
 
@@ -107,9 +107,9 @@ function buildDashboard() {
 			console.log(quarterLabel);
 			console.log(salesQuarterdata);
 
-			chart(lineChartData('line',dataRev,labelRev),'montly-revenue');
-			chart(pieChartData('pie',salesMandata,salesManlabel),'annual-revenuexsalesman');
-			chart(barChartData('bar',salesQuarterdata,quarterLabel),'quarter-chart');
+			chart(lineChartData(dataRev,labelRev),'montly-revenue');
+			chart(pieChartData(salesMandata,salesManlabel),'annual-revenuexsalesman');
+			chart(barChartData(salesQuarterdata,quarterLabel),'quarter-chart');
 		},
 
 		error: function(err) {
@@ -124,9 +124,9 @@ function buildDashboard() {
 		var myChart = new Chart(ctx,data);
 	};
 
-	function lineChartData(type,data,labels) {
+	function lineChartData(data,labels) {
 		var data = {
-			type: type,
+			type: 'line',
 			data: {
 				datasets: [{
 				   data: data,
@@ -142,9 +142,9 @@ function buildDashboard() {
 
 	};
 
-	function barChartData(type,data,labels) {
+	function barChartData(data,labels) {
 		var data = {
-			type: type,
+			type: 'bar',
 			data: {
 				datasets: [{
 				   data: data,
@@ -158,9 +158,9 @@ function buildDashboard() {
 
 	};
 
-	function pieChartData(type,data,labels) {
+	function pieChartData(data,labels) {
 		var data = {
-			type: type,
+			type: 'pie',
 			data: {
 				datasets: [{
 					   data: data,
