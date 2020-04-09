@@ -16,6 +16,12 @@ $('#btn-add').click(function() {
 });
 
 
+
+
+
+
+
+
 function addSales(object) {
 	$.ajax({
 		url: 'http://157.230.17.132:4009/sales',
@@ -23,6 +29,10 @@ function addSales(object) {
 		data: object,
 		success: function() {
 			buildDashboard();
+			myChart.update();
+		},
+		error: function (err) {
+			alert('API Error!')
 		}
 	})
 };
@@ -37,6 +47,7 @@ function buildDashboard() {
 			var montlyRevenues = {};
 			console.log(montlyRevenues);
 			var salesManRevenues = {};
+			var quarterRevenues = {};
 			var totalRevenue = 0;
 
 			for (var i = 0; i < revenuesData.length; i++) {
@@ -46,11 +57,15 @@ function buildDashboard() {
 				var salesMan = revenueData.salesman;
 				var isoDate = moment(date,"DD/MM/YYYY");
 				var monthName = isoDate.month();
+				var quarterDate = isoDate.quarter();
+				console.log(quarterDate);
 				var labelRev = [];
 				var dataRev = [];
 				console.log(totalRevenue);
 				var salesManlabel = [];
 				var salesMandata = [];
+				var quarterLabel = [];
+				var salesQuarterdata = [];
 
 
 				if (montlyRevenues[monthName] === undefined) {
@@ -60,8 +75,13 @@ function buildDashboard() {
 				if (salesManRevenues[salesMan] === undefined) {
 					salesManRevenues[salesMan] = 0;
 				};
+
+				if (quarterRevenues[quarterDate] === undefined) {
+					quarterRevenues[quarterDate] = 0;
+				};
 				montlyRevenues[monthName] += parseInt(revenueData.amount);
 				salesManRevenues[salesMan] += parseInt(revenueData.amount);
+				quarterRevenues[quarterDate] += parseInt(revenueData.amount);
 				totalRevenue += parseInt(revenueData.amount);
 
 
@@ -77,14 +97,25 @@ function buildDashboard() {
 				salesMandata.push((salesManRevenues[key]/totalRevenue));
 			};
 
+			for (var key in quarterRevenues) {
+				quarterLabel.push(key);
+				salesQuarterdata.push(quarterRevenues[key]);
+			};
+
 			console.log(salesManlabel);
 			console.log(salesMandata);
+			console.log(quarterLabel);
+			console.log(salesQuarterdata);
 
 			chart(lineChartData('line',dataRev,labelRev),'montly-revenue');
 			chart(pieChartData('pie',salesMandata,salesManlabel),'annual-revenuexsalesman');
+			chart(barChartData('bar',salesQuarterdata,quarterLabel),'quarter-chart');
+		},
 
-			}
-		});
+		error: function(err) {
+			alert('API Error!');
+		}
+		})
 	}
 
 
@@ -109,7 +140,23 @@ function buildDashboard() {
 
 		return data
 
-	}
+	};
+
+	function barChartData(type,data,labels) {
+		var data = {
+			type: type,
+			data: {
+				datasets: [{
+				   data: data,
+				   label:'',
+			   }],
+			labels: labels,
+			}
+		}
+
+		return data
+
+	};
 
 	function pieChartData(type,data,labels) {
 		var data = {
