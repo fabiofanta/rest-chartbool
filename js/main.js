@@ -8,7 +8,7 @@ $('#btn-add').click(function() {
 	var amount = $('#sales-amount').val();
 	var isoDate = moment(date,'YYYY-MM-DD').format('DD/MM/YYYY');
 	var dataObject = {salesman:salesMan,amount:amount,date:isoDate};
-	
+
 	addSales(dataObject);
 });
 
@@ -76,6 +76,8 @@ $('#btn-add').click(function() {
 		for (var key in salesManRevenues) {
 			salesManLabel.push(key);
 			salesManData.push((salesManRevenues[key]/totalRevenue));
+			// append salesman-select aptions
+			$('#salesman-select').append('<option value="'+ key +'">'+ key + '</option>');
 		};
 
 		return {label:salesManLabel,data:salesManData}
