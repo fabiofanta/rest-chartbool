@@ -148,6 +148,7 @@ $(document).ready(function () {
 				labels: labels,
 			},
 			options: {
+				maintainAspectRatio:false,
 				tooltips: {
 					callbacks: {
 						label:function (tooltipItem, data) {
@@ -189,6 +190,7 @@ $(document).ready(function () {
 			labels: labels,
 		},
 			options: {
+				maintainAspectRatio:false,
 				scales: {
         			yAxes: [{
             			gridLines: {
@@ -222,6 +224,7 @@ $(document).ready(function () {
 				labels: labels
 				},
 			options: {
+				maintainAspectRatio:false,
 				tooltips: {
 					callbacks: {
 						label:function (tooltipItem, data) {
