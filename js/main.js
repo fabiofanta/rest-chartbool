@@ -127,6 +127,9 @@ $(document).ready(function () {
 	function chart(data,selector) {
 		var ctx = $('#'+ selector +'');
 		Chart.defaults.global.defaultFontColor = 'white';
+		Chart.Legend.prototype.afterFit = function() {
+		    this.height = this.height + 20;
+		};
 		var myChart = new Chart(ctx,data);
 	};
 
@@ -145,6 +148,14 @@ $(document).ready(function () {
 				labels: labels,
 			},
 			options: {
+				tooltips: {
+					callbacks: {
+						label:function (tooltipItem, data) {
+							var tooltips = data.datasets[0].data[tooltipItem.index];
+							return  tooltips + "€"
+						}
+					}
+				},
 				scales: {
         			yAxes: [{
             			gridLines: {

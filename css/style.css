@@ -62,3 +62,24 @@
       -webkit-appearance: none;
       -moz-appearance: textfield;
   }
+
+  @media screen and (max-width:950px) {
+      .dashboard .container {
+          float: none;
+      }
+
+      .container {
+          margin: auto;
+          width: 100%;
+      }
+
+      .dashboard {
+          height: 100%;
+      }
+
+      .container.selectors select,.container.selectors input,.container.selectors button {
+          padding: 10px;
+          border-radius: 5px;
+          font-size: 16px;
+      }
+  }
