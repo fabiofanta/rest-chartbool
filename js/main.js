@@ -106,7 +106,15 @@ $(document).ready(function () {
 				chart(barChartData(quarterSalesData.data,quarterSalesData.label),'quarter-chart');
 
 				//  function to add data using a post ajax call
-				addSales(salesManData.label);
+				$('#btn-add').click(function() {
+					addSales(salesManData.label);
+				});
+
+				$('#sales-amount').keypress(function(event) {
+				    if(event.key =='Enter') {
+				        addSales(salesManData.label);
+				    };
+				});
 
 			},
 
@@ -195,30 +203,26 @@ $(document).ready(function () {
 };
 
 	function addSales(salesManToCheck) {
-		$('#btn-add').click(function() {
-			var salesMan = $('#salesman-select').val();
-			console.log(salesMan);
-			var smtcLowCase = arrayToLowerCase(salesManToCheck);
-			console.log(smtcLowCase);
-			if (!smtcLowCase.includes(salesMan.toLowerCase())) {
-				alert('Invalid SalesMan name');
+		var salesMan = $('#salesman-select').val();
+		var smtcLowCase = arrayToLowerCase(salesManToCheck);
+		if (!smtcLowCase.includes(salesMan.toLowerCase())) {
+			alert('Invalid SalesMan name');
+		} else {
+			var date = $('#sales-date').val();
+			var amount = parseInt($('#sales-amount').val());
+			if (isNaN(amount)) {
+				alert('Invalid amount');
 			} else {
-				var date = $('#sales-date').val();
-				var amount = parseInt($('#sales-amount').val());
-				if (isNaN(amount)) {
-					alert('Invalid amount');
+				var isoDate = moment(date,'YYYY-MM-DD').format('DD/MM/YYYY');
+				if (isoDate == 'Invalid date' || isoDate != moment(date,'YYYY-MM-DD').format('DD/MM/2017')) {
+					alert('Invalid date');
 				} else {
-					var isoDate = moment(date,'YYYY-MM-DD').format('DD/MM/YYYY');
-					if (isoDate == 'Invalid date' || isoDate != moment(date,'YYYY-MM-DD').format('DD/MM/2017')) {
-						alert('Invalid date');
-					} else {
-						var dataObject = {salesman:stringCapitalize(salesMan),amount:amount,date:isoDate};
-						postData(dataObject);
-						console.log(dataObject);
-					};
+					var dataObject = {salesman:stringCapitalize(salesMan),amount:amount,date:isoDate};
+					// postData(dataObject);
+					console.log(dataObject);
 				};
 			};
-		});
+		};
 	};
 
 	function arrayToLowerCase(array) {
