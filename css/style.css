@@ -3,3 +3,57 @@
     padding: 0;
     box-sizing: border-box;
   }
+
+  .clearfix::after {
+      content: "";
+      display: table;
+      clear: both;
+  }
+
+  main {
+      height:100vh;
+      width: 100vw;
+  }
+
+  /* .dashboard {
+      height: calc(100% - 50px);
+      width:  calc(100% - 50px);
+      margin: auto;
+  } */
+
+  .dash,.container.selectors {
+      width: 50%;
+  }
+
+  .dash.right {
+      float: right;
+  }
+
+  .dash.left {
+      float: left;
+  }
+
+  .container.selectors {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+  }
+
+  .container.selectors select,.container.selectors input,.container.selectors button {
+      width: 100%;
+      padding: 20px;
+      border-radius: 5px;
+      border: 1px solid black;
+      font-family: 'Roboto', sans-serif;
+      font-size: 16px;
+  }
+
+  .container.selectors button {
+      color: white;
+      background-color: red;
+      text-transform: uppercase;
+      border: none;
+      font-weight: bold;
+
+  }

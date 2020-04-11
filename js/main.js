@@ -90,7 +90,7 @@ $(document).ready(function () {
 	};
 
 	function buildDashboard() {
-		$('.charts').empty(); // reset canvas
+		// $('.charts').empty(); // reset canvas
 		$.ajax({
 			url: 'http://157.230.17.132:4009/sales',
 			method:'GET',
@@ -99,7 +99,7 @@ $(document).ready(function () {
 				var montlyData = montlyRevDataBuilder(revenuesData);
 				var salesManData = salesManDataBuilder(revenuesData);
 				var quarterSalesData = qrtSalesDataBuilder(revenuesData);
-				$('.charts').append('<canvas id="montly-revenue"></canvas><canvas id="annual-revenuexsalesman"></canvas><canvas id="quarter-chart"></canvas>'); // // reset canvas
+				// $('.charts').append('<canvas id="montly-revenue"></canvas><canvas id="annual-revenuexsalesman"></canvas><canvas id="quarter-chart"></canvas>'); // // reset canvas
 
 				chart(lineChartData(montlyData.data,montlyData.label),'montly-revenue');
 				chart(pieChartData(salesManData.data,salesManData.label),'annual-revenuexsalesman');

@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="css/style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> 
 		<title></title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" charset="utf-8"></script>
@@ -12,27 +13,24 @@
         <script src="js/main.js" charset="utf-8"></script>
 	</head>
 	<body>
-		<div class="dashboard">
-			<div class="container">
-				<select id="salesman-select" name="">
-					<option  value="" disabled selected>Select a Salesman</option>
-				</select>
-				<input id="sales-date"type="date" name="" value="2017-01-01" min="2017-01-01" max="2017-12-31">
-				<input id="sales-amount"type="number" name="" value="">
-				<button id="btn-add">Add</button>
-			</div>
-			<div class="charts">
-				<div class="container">
+		<main>
+			<div class="dashboard clearfix">
+				<div class="dash left">
 					<canvas id="montly-revenue"></canvas>
-				</div>
-				<div class="container">
-					<canvas id="annual-revenuexsalesman"></canvas>
-				</div>
-				<div class="container">
 					<canvas id="quarter-chart"></canvas>
 				</div>
+				<div class="dash right">
+					<canvas id="annual-revenuexsalesman"></canvas>
+				</div>
+				<div class="container selectors">
+					<select id="salesman-select" name="">
+						<option  value="" disabled selected>Select a Salesman</option>
+					</select>
+					<input id="sales-date"type="date" name="" value="2017-01-01" min="2017-01-01" max="2017-12-31">
+					<input id="sales-amount"type="number" name="" value="">
+					<button id="btn-add">Add</button>
+				</div>
 			</div>
-		</div>
-
+		</main>
 	</body>
 </html>
