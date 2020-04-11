@@ -55,5 +55,9 @@
       text-transform: uppercase;
       border: none;
       font-weight: bold;
+  }
 
+  .container.selectors select,.container.selectors input[type='number'] {
+      -moz-appearance:textfield;
+      -webkit-appearance: none;
   }

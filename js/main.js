@@ -210,7 +210,7 @@ $(document).ready(function () {
 		} else {
 			var date = $('#sales-date').val();
 			var amount = parseInt($('#sales-amount').val());
-			if (isNaN(amount)) {
+			if (isNaN(amount) || amount < 1) {
 				alert('Invalid amount');
 			} else {
 				var isoDate = moment(date,'YYYY-MM-DD').format('DD/MM/YYYY');
