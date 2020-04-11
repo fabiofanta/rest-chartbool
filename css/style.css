@@ -57,7 +57,7 @@
       font-weight: bold;
   }
 
-  .container.selectors select,.container.selectors input[type='number'] {
-      -moz-appearance:textfield;
+  .container.selectors select,input[type=number] {
       -webkit-appearance: none;
+      -moz-appearance: textfield;
   }
