@@ -10,51 +10,42 @@
       clear: both;
   }
 
-  main {
-      height:100vh;
-      width: 100vw;
+  .dashboard {
+      height: 100vh;
+      min-width:  calc(100% - 50px);
+      padding: 30px;
+      background-color: black;
   }
 
-  /* .dashboard {
-      height: calc(100% - 50px);
-      width:  calc(100% - 50px);
-      margin: auto;
-  } */
-
-  .dash,.container.selectors {
+  .container {
       width: 50%;
-  }
-
-  .dash.right {
-      float: right;
-  }
-
-  .dash.left {
-      float: left;
-  }
-
-  .container.selectors {
+      height: 50%;
+      padding: 30px;
       display: flex;
-      align-items: center;
       justify-content: center;
       flex-direction: column;
   }
 
+  .dashboard .container {
+      float: left;
+  }
+
   .container.selectors select,.container.selectors input,.container.selectors button {
       width: 100%;
-      padding: 20px;
+      padding: 1.1vw;
       border-radius: 5px;
       border: 1px solid black;
       font-family: 'Roboto', sans-serif;
-      font-size: 16px;
+      font-size: 1.1vw;
   }
 
   .container.selectors button {
       color: white;
-      background-color: red;
+      background-color: green;
       text-transform: uppercase;
       border: none;
       font-weight: bold;
+      margin-top: 10px;
   }
 
   .container.selectors select,input[type=number] {

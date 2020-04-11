@@ -90,7 +90,6 @@ $(document).ready(function () {
 	};
 
 	function buildDashboard() {
-		// $('.charts').empty(); // reset canvas
 		$.ajax({
 			url: 'http://157.230.17.132:4009/sales',
 			method:'GET',
@@ -99,7 +98,8 @@ $(document).ready(function () {
 				var montlyData = montlyRevDataBuilder(revenuesData);
 				var salesManData = salesManDataBuilder(revenuesData);
 				var quarterSalesData = qrtSalesDataBuilder(revenuesData);
-				// $('.charts').append('<canvas id="montly-revenue"></canvas><canvas id="annual-revenuexsalesman"></canvas><canvas id="quarter-chart"></canvas>'); // // reset canvas
+
+				replaceCanvas();
 
 				chart(lineChartData(montlyData.data,montlyData.label),'montly-revenue');
 				chart(pieChartData(salesManData.data,salesManData.label),'annual-revenuexsalesman');
@@ -126,6 +126,7 @@ $(document).ready(function () {
 
 	function chart(data,selector) {
 		var ctx = $('#'+ selector +'');
+		Chart.defaults.global.defaultFontColor = 'white';
 		var myChart = new Chart(ctx,data);
 	};
 
@@ -137,11 +138,27 @@ $(document).ready(function () {
 				   data: data,
 				   label:'Montly Revenues',
 				   fill:false,
-				   lineTension:0
+				   lineTension:0,
+				   backgroundColor: 'yellow',
+				   borderColor: 'yellow',
 			   }],
-			labels: labels,
+				labels: labels,
+			},
+			options: {
+				scales: {
+        			yAxes: [{
+            			gridLines: {
+                			color: 'rgba(255, 255, 255, 0.2)',
+			            }
+			        }],
+        			xAxes: [{
+            			gridLines: {
+                			color: 'rgba(255, 255, 255, 0.2)',
+			            }
+			        }]
+			    },
 			}
-		}
+		};
 
 		return data
 
@@ -153,11 +170,31 @@ $(document).ready(function () {
 			data: {
 				datasets: [{
 				   data: data,
-				   label:'',
+				   label:'Quarter Sales (number)',
+				   backgroundColor: 'Blue',
+				   borderColor: 'Blue',
+				   hoverBackgroundColor: 'lightblue',
 			   }],
 			labels: labels,
+		},
+			options: {
+				scales: {
+        			yAxes: [{
+            			gridLines: {
+                			color: 'rgba(255, 255, 255, 0.2)',
+			            },
+						ticks: {
+		                    beginAtZero: true
+		                }
+			        }],
+        			xAxes: [{
+            			gridLines: {
+                			color: 'rgba(255, 255, 255, 0.2)',
+			            }
+			        }]
+			    },
 			}
-		}
+		};
 
 		return data
 
@@ -169,7 +206,6 @@ $(document).ready(function () {
 			data: {
 				datasets: [{
 					   data: data,
-					   label:'Annual revenues per Salesman',
 					   backgroundColor: ['blue','red','yellow','green'],
 				   		}],
 				labels: labels
@@ -205,7 +241,7 @@ $(document).ready(function () {
 	function addSales(salesManToCheck) {
 		var salesMan = $('#salesman-select').val();
 		var smtcLowCase = arrayToLowerCase(salesManToCheck);
-		if (!smtcLowCase.includes(salesMan.toLowerCase())) {
+		if (salesMan == null || !smtcLowCase.includes(salesMan.toLowerCase())) {
 			alert('Invalid SalesMan name');
 		} else {
 			var date = $('#sales-date').val();
@@ -218,8 +254,7 @@ $(document).ready(function () {
 					alert('Invalid date');
 				} else {
 					var dataObject = {salesman:stringCapitalize(salesMan),amount:amount,date:isoDate};
-					// postData(dataObject);
-					console.log(dataObject);
+					postData(dataObject);
 				};
 			};
 		};
@@ -237,6 +272,12 @@ $(document).ready(function () {
 	function stringCapitalize(string) {
     	return string.charAt(0).toUpperCase() + string.toLowerCase().slice(1);
 	};
+
+	function replaceCanvas() {
+		$('.chart-1 canvas').replaceWith('<canvas id="montly-revenue"></canvas>'); // // reset canvas
+		$('.chart-2 canvas').replaceWith('<canvas id="annual-revenuexsalesman"></canvas>'); // // reset canvas
+		$('.chart-3 canvas').replaceWith('<canvas id="quarter-chart"></canvas>'); // // reset canvas
+	}
 
 
 
